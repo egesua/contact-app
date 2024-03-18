@@ -23,7 +23,9 @@ const ContactList = ({ data, currentPage, getAllContacts }) => {
           >
             &laquo;
           </a>
-          <a onClick={() => getAllContacts(currentPage + 1)} className={0 === currentPage ? "disabled" : ""}></a>
+          <a onClick={() => getAllContacts(currentPage + 1)} className={data.totalPages === currentPage + 1 ? "disabled" : ""}>
+            &raquo;
+          </a>
         </div>
       )}
     </main>
