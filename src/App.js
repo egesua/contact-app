@@ -1,6 +1,9 @@
+import Header from "./components/Header";
+import ContactList from "./components/ContactList";
+
 import { useEffect, useState } from "react";
 import { getContacts } from "./api/ContactService";
-import Header from "./components/Header";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   const [data, setData] = useState({});
@@ -25,7 +28,10 @@ function App() {
 
   return (
     <>
-      <Header toggleModal={toggleModal} numOfContacts={50} />
+      <Header toggleModal={toggleModal} numOfContacts={data.totalElements} />
+      <Routes>
+        <Route path="/contacts" element={<ContactList data={data} currentPage={currentPage} getAllContacts={getAllContacts} />} />
+      </Routes>
     </>
   );
 }
