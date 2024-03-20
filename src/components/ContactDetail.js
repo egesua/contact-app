@@ -53,7 +53,6 @@ const ContactDetail = ({ updateContact, updateImage }) => {
     e.preventDefault();
     await updateContact(contact);
     fetchContact(id);
-    toastSuccess("Contact Updated");
   };
 
   useEffect((id) => {
@@ -74,8 +73,7 @@ const ContactDetail = ({ updateContact, updateImage }) => {
           <div className="profile__metadata">
             <p className="profile__name">{contact.name}</p>
             <p className="profile__muted">JPG, GIF, or PNG. Max size of 10MG</p>
-            <button className="btn">
-              {" "}
+            <button onClick={selectImage} className="btn">
               <i className="bi bi-cloud-upload"></i> Change Photo
             </button>
           </div>
