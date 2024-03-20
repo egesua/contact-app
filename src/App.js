@@ -3,7 +3,7 @@ import ContactList from "./components/ContactList";
 
 import { useEffect, useState } from "react";
 import { getContacts } from "./api/ContactService";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
   const [data, setData] = useState({});
@@ -30,7 +30,17 @@ function App() {
     <>
       <Header toggleModal={toggleModal} numOfContacts={data.totalElements} />
       <Routes>
-        <Route path="/contacts" element={<ContactList data={data} currentPage={currentPage} getAllContacts={getAllContacts} />} />
+        <Route path="/" element={<Navigate to={"/contacts"} />} />
+        <Route
+          path="/contacts"
+          element={
+            <ContactList
+              data={data}
+              currentPage={currentPage}
+              getAllContacts={getAllContacts}
+            />
+          }
+        />
       </Routes>
     </>
   );
