@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getContact } from "../api/ContactService";
 
 const ContactDetail = ({ updateContact, updateImage }) => {
+  const inputRef = useRef();
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -20,6 +21,19 @@ const ContactDetail = ({ updateContact, updateImage }) => {
     try {
       const { data } = await getContact(id);
       setContact(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const selectImage = () => {};
+
+  const updatePhoto = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+      formData.append("id", id);
+      const { data } = await updateImage(formData);
     } catch (err) {
       console.log(err);
     }
@@ -51,6 +65,16 @@ const ContactDetail = ({ updateContact, updateImage }) => {
         </div>
         <div className="profile__settings"> Setting will go here.</div>
       </div>
+
+      <form style={{ display: "none" }}>
+        <input
+          type="file"
+          ref={inputRef}
+          onChange={(e) => updatePhoto(e.target.files[0])}
+          name="file"
+          accept="image/*"
+        />
+      </form>
     </>
   );
 };
