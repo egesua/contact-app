@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import ContactList from "./components/ContactList";
 
 import { useEffect, useRef, useState } from "react";
-import { getContacts, saveContact } from "./api/ContactService";
+import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
@@ -39,8 +39,15 @@ function App() {
   const handleNewContact = async (e) => {
     e.preventDefault();
     try {
-      const response = await saveContact(values);
-      console.log(response);
+      const { data } = await saveContact(values);
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+      formData.append("id", data.id);
+      const { data: photoUrl } = await updatePhoto(formData);
+      console.log(photoUrl);
+      setFile(undefined);
+      fileRef.current.value = null;
+      getAllContacts();
     } catch (err) {
       console.log(err);
     }
