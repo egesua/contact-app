@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import ContactList from "./components/ContactList";
 
 import { useEffect, useRef, useState } from "react";
-import { getContacts } from "./api/ContactService";
+import { getContacts, saveContact } from "./api/ContactService";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
@@ -12,14 +12,13 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [file, setFile] = useState(undefined);
   const [values, setValues] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    title: '',
-    status: '',
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    title: "",
+    status: "",
   });
-  
 
   const getAllContacts = async (page = 0, size = 10) => {
     try {
@@ -33,11 +32,22 @@ function App() {
   };
 
   const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value })
-    console.log(values)
-  }
+    setValues({ ...values, [e.target.name]: e.target.value });
+    console.log(values);
+  };
 
-  const toggleModal = (show) => show ? modalRef.current.showModal() : modalRef.current.close();
+  const handleNewContact = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await saveContact(values);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const toggleModal = (show) =>
+    show ? modalRef.current.showModal() : modalRef.current.close();
 
   useEffect(() => {
     getAllContacts();
