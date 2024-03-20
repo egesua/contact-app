@@ -2,8 +2,9 @@ import Header from "./components/Header";
 import ContactList from "./components/ContactList";
 
 import { useEffect, useRef, useState } from "react";
-import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
+import { getContacts, saveContact, updateContact, updatePhoto } from "./api/ContactService";
 import { Routes, Route, Navigate } from "react-router-dom";
+import ContactDetail from "./components/ContactDetail";
 
 function App() {
   const modalRef = useRef();
@@ -33,7 +34,6 @@ function App() {
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    console.log(values);
   };
 
   const handleNewContact = async (e) => {
@@ -44,14 +44,26 @@ function App() {
       formData.append("file", file, file.name);
       formData.append("id", data.id);
       const { data: photoUrl } = await updatePhoto(formData);
-      console.log(photoUrl);
+      toggleModal(false);
       setFile(undefined);
       fileRef.current.value = null;
+      setValues({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        title: "",
+        status: "",
+      });
       getAllContacts();
     } catch (err) {
       console.log(err);
     }
   };
+
+  const updateContact = async () => {};
+
+  const updateImage = async () => {};
 
   const toggleModal = (show) =>
     show ? modalRef.current.showModal() : modalRef.current.close();
@@ -77,6 +89,7 @@ function App() {
                 />
               }
             />
+            <Route path="/contacts/:id" element={<ContactDetail updateContact={updateContact} updateImage={updateImage} />} />
           </Routes>
         </div>
       </main>
