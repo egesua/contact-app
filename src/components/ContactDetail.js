@@ -1,26 +1,35 @@
-import React from "react"
-import { useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { getContact } from "../api/ContactService";
 
 const ContactDetail = ({ updateContact, updateImage }) => {
-
-  const [values, setValues] = useState({
+  const [contact, setContact] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
     title: "",
     status: "",
-    photoUrl: ""
+    photoUrl: "",
   });
 
   const { id } = useParams();
-  console.log(id);
-  return (
-    <div>
-      
-    </div>
-  )
+
+  const fetchContact = async (id) => {
+    try {
+      const { data } = await getContact(id);
+      setContact(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchContact(id);
+  }, []);
+
+  return <div></div>;
 };
 
 export default ContactDetail;
